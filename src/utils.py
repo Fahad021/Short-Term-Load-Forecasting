@@ -20,7 +20,7 @@ def train(model, train_data, test_data, weights_file, plots_file, doTrain = True
         #callbacks
         checkpoint = ModelCheckpoint(weights_file, monitor='val_mean_absolute_percentage_error', verbose = verbose, save_best_only=True, mode='min')
         lr_scheduler = ReduceLROnPlateau('val_loss', patience=10, verbose = verbose)
-        
+
         # Train
         History = model.fit(x_train, y_train, batch_size=32,
                             epochs = 100, validation_split=0.2,
@@ -47,10 +47,8 @@ def train(model, train_data, test_data, weights_file, plots_file, doTrain = True
 
     predicted = model.predict(x_test)
     actual = y_test
-    
-    mape = mean_absolute_percentage_error(actual, predicted)
 
-    return mape
+    return mean_absolute_percentage_error(actual, predicted)
 
 
 def create_graphs(data, labels, graph_data, dates, graph_file):

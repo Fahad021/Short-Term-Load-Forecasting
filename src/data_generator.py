@@ -25,12 +25,7 @@ class DataGen():
 
   def get_data(self, data_type, window, normalize_basic = True, normalize_derived = True):
     
-    if(data_type=='train'):
-      data = self.train
-
-    else:
-      data = self.test
-
+    data = self.train if (data_type=='train') else self.test
     #Basic features
     E = data.E.values
     if (normalize_basic):
@@ -61,14 +56,14 @@ class DataGen():
 
     Avg[:-1] = Avg[1:]
     Std[:-1] = Std[1:]
-    
+
     if(normalize_derived):
       Avg = (Avg - self.Avg_paras[0]) / (self.Avg_paras[1] - self.Avg_paras[0])
       Std = (Std - self.Std_paras[0]) / (self.Std_paras[1] - self.Std_paras[0])
 
       Avg_w = (Avg_w - self.Avg_w_paras[0]) / (self.Avg_w_paras[1] - self.Avg_w_paras[0])
       Std_w = (Std_w - self.Std_w_paras[0]) / (self.Std_w_paras[1] - self.Std_w_paras[0])
-    
+
     Avg = Avg.reshape(-1, 1)
     Std = Std.reshape(-1, 1)
     Avg_w = Avg_w.reshape(-1, 1)
@@ -83,7 +78,7 @@ class DataGen():
     for i in range(len(data) - seq_len):
       seq_basic.append(basic_data[i: i + seq_len])
       seq_derived.append(derived_data[i: i + window])
-    
+
     seq_basic = np.asarray(seq_basic)
     seq_derived = np.asarray(seq_derived)
 
@@ -92,5 +87,5 @@ class DataGen():
 
     if(normalize_basic):
       y_data = (y_data* (self.E_paras[1] - self.E_paras[0])) + self.E_paras[0]    
-    
+
     return x_data, y_data, seq_derived
